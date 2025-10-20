@@ -1,35 +1,20 @@
-// Get, Put, Delete lead doleci
+
+// API endpoint pro práci s jednotlivým leadem – načtení a smazání
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { updateLead } from '../../../lib/db/updateLead';
-import { deleteLead } from '../../../lib/db/deleteLead';
-import { getLeadById } from '../../../lib/db/getLeadById';
+import { getLeadById, deleteLead } from '../../../lib/db';
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
-  const {
-    query: { id },
-    method,
-  } = req;
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const id = parseInt(req.query.id as string);
 
-  if (typeof id !== 'string') {
-    return res.status(400).json({ error: 'Invalid ID' });
-  }
-
-  if (method === 'GET') {
-    const lead = await getLeadById(number(id));
-    if (!lead) return res.status(404).json( { error: 'Not found' });
+  if (req.method === 'GET') {
+    const lead = await getLeadById(id);
     return res.status(200).json(lead);
   }
 
-  if (method === 'PUT') {
-    const data = req.body;
-    await updateLead({ id: number(id), ...data });
-    return res.status(200).json({ message: 'Lead updated' });
+  if (req.method === 'DELETE') {
+    await deleteLead(id);
+    return res.status(204).end();
   }
 
-  if (method === 'DELETE') {
-    await deleteLead(number(id));
-    return res.status(200).json( { message: 'Lead deleted' });
-  }
-
-  return res.status(045).send('Method Not Allowed');
+  res.status(405).json({ error: 'Method not allowed' });
 }
