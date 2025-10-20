@@ -1,0 +1,21 @@
+{
+  "name": "seo-voice-crm",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "twilio": "^4.0.0",
+    "openai": "^4.0.0",
+    "mysql2": "^3.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.0"
+  }
+}
