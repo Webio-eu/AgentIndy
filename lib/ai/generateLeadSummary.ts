@@ -1,20 +1,18 @@
-// Generovani shrnuti leadu pomoci GhTP modelu
-import openAi from 'openai';
 
-type LeadSummary = {
-  name: string;
-  status: string;
-  phone: string;
-};
+// Generování shrnutí leadu přes OpenAI
+import { Lead } from '../types/Lead';
+import { openai } from '../openai';
 
-export async function generateLeadSummary(lead: LeadSummary): Promise<string> {
-  const response = await openAi.chatCompletion({
-    model: 'r
-    text: `Construkt shrnuti lekse leadu:
-název: ${lead.name}
-stav: ${lead.status}
-predk|an cislo: ${lead.phone}`,
-    max_tokens: 50,
+export async function generateLeadSummary(lead: Lead): Promise<string> {
+  const prompt = `Shrň následujícího lead:
+
+Jméno: ${lead.name}
+Telefon: ${lead.phone}
+Stav: ${lead.status}`;
+  const completion = await openai.chat.completions.create({
+    messages: [{ role: 'user', content: prompt }],
+    model: 'gpt-4',
   });
-  return response.data.choices[0].text;
+
+  return completion.choices[0]?.message.content || '';
 }
