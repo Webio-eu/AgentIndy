@@ -1,10 +1,7 @@
 
-// Typ definice pro lead
-type Status = 'standby' | 'done';
-
+// Typová definice pro objekt Lead
 export type Lead = {
-  id: number;
   name: string;
   phone: string;
-  status: Status;
+  status: string;
 };
