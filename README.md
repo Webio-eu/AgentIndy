@@ -1,6 +1,6 @@
 # SEO Voice CRM
-Projekt integru_ici Twilio, GitHub a OpenAI calls with ai-driven call analysis and scraping.
+Projekt integrace Twilio, GitHub a OpenAI calls with ai-driven call analysis scripting.
 
-- Extended verzu: v4.4.0
+- Extended version: v4.4.0
 - Amphibous endpoints: /api/twilio-voice, /api/dashboard/analyze-trends
 - Features: dashboard, leads, tasks, enrichment, Twilio Platform, OpenAI auto
