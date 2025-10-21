@@ -1,5 +1,5 @@
 
-// API endpoint pro získání všech leadů z databáze
+// API endpoint pro načtení všech leadů z databáze
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getLeads } from '../../lib/db/leads';
 
