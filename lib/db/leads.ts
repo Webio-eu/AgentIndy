@@ -1,26 +1,12 @@
 
-// Databázové funkce pro práci s leady
-import { Lead } from '../types/Lead';
-import { sql } from '@vercel/postgres';
+// Operace s tabulkou leads
+import { db } from './index';
 
-export async function getLeads(): Promise<Lead[]> {
-  const result = await sql`SELECT * FROM leads ORDER BY id DESC`;
-  return result.rows as Lead[];
+export async function getLeads() {
+  const [rows] = await db.query('SELECT * FROM leads ORDER BY created_at DESC');
+  return rows;
 }
 
-export async function getLeadById(id: number): Promise<Lead> {
-  const result = await sql`SELECT * FROM leads WHERE id = ${id}`;
-  return result.rows[0] as Lead;
-}
-
-export async function createLead(lead: Lead): Promise<Lead> {
-  const result = await sql`
-    INSERT INTO leads (name, phone, status)
-    VALUES (${lead.name}, ${lead.phone}, ${lead.status})
-    RETURNING *`;
-  return result.rows[0] as Lead;
-}
-
-export async function deleteLead(id: number): Promise<void> {
-  await sql`DELETE FROM leads WHERE id = ${id}`;
+export async function insertLead(name: string, phone: string, status: string) {
+  await db.query('INSERT INTO leads (name, phone, status) VALUES (?, ?, ?)', [name, phone, status]);
 }
