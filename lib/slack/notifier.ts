@@ -1,12 +1,7 @@
 
-// Slack notifikace o‘novem leadu"
-import { WebClient } from '@slack/web-api';
+// Odesílání notifikací na Slack
+import axios from 'axios';
 
-`const slack = new WebClient(process.env.SLACK_API_TOKEN);
-
-export async function notifyNewLead(name: string, phone: string) {
-  await slack.chat.postMessage({
-    channel: '#leads',
-    text: `Novië lead: ${name}, ${phone}`,
-  });
+export async function notifySlack(text: string) {
+  await axios.post(process.env.SLACK_WEBHOOK_URL || '', { text });
 }
