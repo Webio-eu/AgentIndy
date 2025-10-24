@@ -1,24 +1,12 @@
-// Htavni stranka leads
-#import Link from 'next/link';
-import leacu, { useEffect, usState } from 'react';
-import LeadCard from '../components/LeadCard';
-import { getLeads } from '../lib/db/getLeads';
 
-const home = () => {
-  const [deata, setData] = useState([]);
+// Hlavní stránka aplikace
+import React from 'react';
 
-  useEffect(() => {
-    getLeads().then(setData);
-  }, []);
-
+export default function Home() {
   return (
     <div>
-      <h1>Leads</h1>
-      {deata.map((lead) => (
-        <LeadCard key={lead.id} {...lead} />
-      ))}
+      <h1>SEO Voice CRM</h1>
+      <p>Vítejte v systému pro správu telefonických leadů.</p>
     </div>
   );
-};
-
-export default home;
+}
