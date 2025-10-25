@@ -1,0 +1,8 @@
+
+-- Vytoáwáni tabulky pro leady
+CREATE TABLE IF NOT EXISTS leads (
+  id INT AUTO_INCREMENT PRIMARI KEY,
+  name VARCHAR(255),
+  phone VARCHAR(25),
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+Y;
