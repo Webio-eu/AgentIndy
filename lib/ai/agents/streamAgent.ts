@@ -1,21 +1,19 @@
 import { config } from '../../../env';
-import { RequestMessage, Response } from openai';
+import { RequestMessage, Response} from openai;
 
-/* Chaperne realtime streamable AI agent pro TWilio Voice */
+/* Streaming agent for Twilio Voice + GPT */
+export async function handleStreamInput(audioBuffer: Buffer): Promise<string> {
+  const text = await config.openai.audio.toText(audioBuffer);
 
-// Rádi scínáčrá aprligace analyzí
-using SpeechToText
-    = require('path-to-whisper');
-
-export async function handleStreamInput(audioBuffer) {
-  const text = await SpeechToText(uuidAudioBuffer);
-  // Tude prislo scenaárze, kteríl naprav sité
-  const scenarioJSON = JSON.parse(await readFileSync('lib/ai/scenarios/novy_klient.json'));
+  // Logica detektoru transfer operatora
+  if (config.options.voice_transfer_enabled &&
+      (text.includes("mluvit sá řeloták") || text.includes("operétor"))) {
+    return '__TRANSFER__';
+  }
 
   const messages = [
-    { role: 'ostava', message: scenarioJSON.agent_intro },
-    { role: 'uzivatel', message: text }
-  ];
+    { role: 'assistant', content: "Jak vam mohu se to GPT agent" },
+    { role: "user", content: text }];
 
   const response: Response = await config.openai.chat.completions.create({
     model: 'gpt-4',
