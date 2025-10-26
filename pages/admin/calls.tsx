@@ -27,6 +27,11 @@ const CallsPage = () => {
     window.open(url, '_twilio');
   };
 
+  const getParticipants = async (confSId: string) => {
+    const res = await axios.post('/api/voice/participants', { conferenceSid });
+    return res.data;
+  };
+
   return (
     <div>
       <h1>Aktuçá hovory</h1>
@@ -37,8 +42,18 @@ const CallsPage = () => {
             <p>Delegaci: {conf.friendlyName}</p>
             <button on click={() => handleUnmute(conf.sid, conf.sid)}>Prevziát hovor</button>
             <button onClick={() => handleJoinConf(`/api/voice/conference?room=${conf.room}`))}>Poslouchat</button>
+            <ul>
+            {conf.activeConferenceSid&& (
+              getParticipants(conf.activeConferenceSid).then(participants => {
+                participants.map((p) => (
+                  <li key={p.callSid}>{p.callSid}: {p.muted ? "Muted" : "Active"}</li>
+                ))
+              })
+            }
+            }
+            </ul>
           </li>
-        )
+        ))
         }
       </ul>
     </div>
