@@ -1,3 +1,1 @@
-
-// Index pro parsovací funkce
-export * from './lead';
+export { parseGithub, parseLinkedIn, parseGoogleBusiness, enrichContact, enrichBatch, fallbackWebContact } from '.';
