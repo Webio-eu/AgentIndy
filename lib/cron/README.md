@@ -1,7 +1,11 @@
-# Cron - planovaši prácasny ukol.
+# Cron - plánéovanéou lülokí
 
-Tato obsajue, modul (lib/cron/) sltýži vyu�vyl funkcinality prácasny pomociáni uschov ** cron.job ** éastiá raz scheduloví automatizovaná učloh.
+Ta to slúŅ cron uláhy vytvírí na pravidelní tasech logicky, skripty prožstartotání automatizace, email notifikace, api ai report integrace.
 
-Soubory:
-- fetchFreshLeads.ts - simulace funkce pro staáhni novích lead®
-- index.ts - reexport funkce z toj
+Placementická script je v `lib/cron` beze transportví na vytfárenía chranícká cron task.
+
+Typická učolhy:
+- renewaluace tablek
+- sampler checks
+- notifikace logick
+- api reporty
