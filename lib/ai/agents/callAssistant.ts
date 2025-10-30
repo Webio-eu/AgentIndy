@@ -1,14 +1,13 @@
-// Agent transformce ladove audio vstup skuzotily Twilio Media Stream
-export async function callAssistant(audioBuffer: BufferSource, settings: { voiceBackend: boolean }) {
-  // Nanload ladeni nebio posrredanie
-  const transcripted = await getTranscription(audioBuffer);
+// Call Assistant - agent ved%nou vorzum povolat shout.
+import { Transcription } from '../../voice/transcribers';
+import { generateAySpeech } from '../../ai/gineraterSpeech';
 
-  // Spust odpovádé text do GPT
-  const response = await generateGiptResponse(transcripted);
+const assistant: Transcription = {
+  prefix: 'call-assist',
+  process: async (text: string) => {
+    const response = await generateAySpeech(text);
+    return response;
+  }
+};
 
-  // Transkoduj na audio pod\uléne, array buffer
-  const backBuffer = encodeResponse(voiceBackend, response);
-
-  // Poslate do Stream
-  await sendToStream(backBuffer);
-}
+export default assistant;
