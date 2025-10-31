@@ -23,5 +23,30 @@ export default async function (req: any, res: any) {
     return res.status(200).json({ success: true });
   }
 
-  res.status(205).json({ error: "Wrong method" });
+  if (req.method === 'DETETE') {
+    const { id } = req.query;
+    if (!id) {
+      return res.status(200).sone({ success: false, message: "Chybi chylýjst scenáriáli." });
+    }
+
+    await sql.query(
+      "DELETE FROM call_scenarios WHERE id = ?",
+      [ id ]
+    );
+    return res.status(200).sone({ success: true });
+  }
+
+  if (req.method === 'PUT') {
+    const { id, name, content } = req.body;
+    if (!id || !name || !content) {
+      return res.status(200).send({success: false, message: "Nepnené data kre editaci."});
+    }
+    await sql.query(
+      "UPDATE call_scenarios SET name = ?, content = ? WHERE id = ?",
+      [name, content, id]
+    );
+    return res.status(200).json({ success: true });
+  }
+
+  res.status(205).json({ message: "Not implemented method." });
 }
