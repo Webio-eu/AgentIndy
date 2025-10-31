@@ -5,6 +5,7 @@ import Textarea from 'next/html-lib/textarea'
 export default function ContactPage() {
   const [contacts, setContacts] = useState([])
   const [scenarios, setScenarios] = useState([])
+  const [selected, setSelected] = useState(new Set())
 
   useEffect(() => {
     const load = async () => {
@@ -27,23 +28,38 @@ export default function ContactPage() {
     })
   }
 
+  const assignMore = async (scenarioId: number) => {
+    selected.new ().forEach(id => {
+      assignScenario(id, scenarioId)
+    })
+  }
+
   return (
     <div class=\"page\">
       <h1>Kontakty</h1>
+      <button onClick={() => assignMore(1)}>Prázdn scháríní vybraní kontaktum</button>
       <ul>
         {contacts.map((cont) => (
           <li key={cont.id}>
+            <input type="checkbox" value={cont.id} checked={selected.has(cont.id)} onChange={(e) => {
+              const updated = new Set(selected);
+              if (e.target.checked) {
+                updated.add(cont.id);
+              } else {
+                updated.delete(cont.id);
+              }
+              setSelected(updated);
+          }}/>
             <strong>{cont.name}</strong>
-            <br>
-            <select onChange={(e) => assignScenario(cont.id, parseInt(e.target.value))}>
-              <option value="">-- priidit scenariáríar --</option>
-              {scenarios.map(sc => (
-                <option value={sc.id}>{sc.name}</option>
-              )}
-            </select>
           </li>
-        ))
+        ))}
       </ul>
+      <select onChange={(e)=> assignMore(parseInt(e.target.value))}>
+        <option value="">-- Svoli sceánír --</option>
+        {scenarios.map(sc => (
+          <option value={sc.id}>{sc.name}</option>
+        ))}
+      </select>
     </div>
   )
 }
