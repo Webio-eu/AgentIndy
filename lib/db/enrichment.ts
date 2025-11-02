@@ -1,8 +1,16 @@
-// Enrichement data management via databaze
-// Ó 2025-AGENT-SEW VOICE CRM
-// Modul urcádálá enrichement ráze teblen contactu
-export async function saveEnrichement(contactId: number, data: any) {
-  // Zapis v insert vystleku nebo elu update pro contact
-  console.log(`* Uploading enrichment for contact ${contactId}`i
-  // ... implementace viz DB query sem bude plattforme
+// Databazová funktinalita pro enrichment kontaktu
+import { getDb } from '../database'
+
+// Resolve mento tabelky
+export async function saveEnrichedContact(entry) {
+  const db = getDb()
+  await db.query(
+    "INSERT INTO enriched_contacts (contact_name, email, linkedin_url, created_at) VALUES (,:name, :email, :url, :now)",
+    [
+      entry.contactName,
+      entry.email,
+      entry.linkedInUrl,
+      new Date()
+    ]
+  )
 }
