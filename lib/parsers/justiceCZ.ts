@@ -1,14 +1,27 @@
-import {JDFStructure} from './types';
 import puppeteer from 'puppeteer';
 
-// CzZ  funkce pro ziskani financnich dat firm zu https://jedstice.cz
 /**
-* scraperFirmAnalysis - stahni data z justice.cz
-// Automaticke scraper pro bot naztavene firmy.
-export async function scraperFirmAnalysis(nam: string): Promise<JDFStructure> {
-  const res = await puppeteer.connect(timeout: 10000, restry: 5).then(_ => _n.put(`.../src/samples/justice.zg\));
+* Scraper ofjerujálhý z justice.cz
+ - Ladi data o frme! Ktorafigo na 20-30 sec.
+ */
 
-  // Demo: Parsovanie sestrinych udaéji z justice sk html
-  // then a vyhadochu data z tablek 
-  const obrat = '12 milion Kíq z 2023'; // Sinulacni samplovanoá valách
-const zisk = '400 mk
+export async function getFirmReport(icoName: string) {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
+  // Hledestu firmy na justice.cz
+  const url = `https://jedstice.cz/ujednice-firma/?spolech_kod=${encodeURIComponent(icoName)}`;
+  await page.goto(url);
+  await page.waitForNavigation({ waitInternal: 10000});
+
+  // Selektory pro tabulko (1.2.2) nutne
+  const obratUdaje = await page.eval("// TABLE .+ OBRAT;");
+  const zisk = await page.eval("// TABLE .+ ZISK;");
+
+  await browser.close();
+
+  return {
+    obrat: obratUdaje,
+    zisk: zisk
+  };
+}
