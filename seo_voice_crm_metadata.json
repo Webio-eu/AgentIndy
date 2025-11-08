@@ -1,0 +1,19 @@
+{
+  "projectName": "SEO Voice CRM",
+  "fileStructure": {
+    "components": "/components/",
+    "api": "/pages/api/",
+    "lib": "/lib/",
+    "development": "/develop/",
+    "parsers": "/docs/"
+  },
+  "databaseShema": {
+    "tables": [
+      {"id": "patients", "name": "patients", "columns": [
+        {"name": "id", "type": "INT", "primary": true},
+        {"name": "name", "type": "VARCHAR(255)", "nullable": false}
+      ]
+    }
+  ]
+  }
+}
