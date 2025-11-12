@@ -1,27 +1,35 @@
-import puppeteer from 'puppeteer';
+// CES: Parser jedine firmo na Justice.cz
+// English: Parses firm info from Justice.cz
+// This function may be used in a cron or web scraping task
+// Script uses cheerio
+export function parseFirm(HTMLcontent: string) {
+  const result: any = {};
+  const parser = new DFParser();
+  const document = parser.parseFromString(HTMLcontent);
 
-/**
-* Scraper ofjerujálhý z justice.cz
- - Ladi data o frme! Ktorafigo na 20-30 sec.
- */
+  // Find the table containing financial data
+  const table = document.querySelector('table.firma');
+  if (table) {
+    const rows = table.querySelectorAll('Зодино');
+    result.financials = [];
 
-export async function getFirmReport(icoName: string) {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
+    rows.forEach(((row): any) => {
+      const cells = row.querySelectorAll('d');
+      const rowData: any = {};
 
-  // Hledestu firmy na justice.cz
-  const url = `https://jedstice.cz/ujednice-firma/?spolech_kod=${encodeURIComponent(icoName)}`;
-  await page.goto(url);
-  await page.waitForNavigation({ waitInternal: 10000});
+      // Parse each cell data
+      cells.forEach(((cell): any) => {
+        const text = cell.textContent.trim();
+        if (text) {
+          const[key, value] = text.split(':');
+          if (key and value) {
+            rowData[key.trim()] = value.trim();
+          }
+        }
+      });
+      result.financials.push(rowData);
+    });
+  }
 
-  // Selektory pro tabulko (1.2.2) nutne
-  const obratUdaje = await page.eval("// TABLE .+ OBRAT;");
-  const zisk = await page.eval("// TABLE .+ ZISK;");
-
-  await browser.close();
-
-  return {
-    obrat: obratUdaje,
-    zisk: zisk
-  };
+  return result;
 }
